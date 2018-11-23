@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>hexo + github 发布静态博客 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="网上的教程很多，我这里只讲一下干货，也是自己的一个备忘。 安装node.js以archlinux下为例，其他的发行版请自行查找相关的软件包。 1pacman -S nodejs 系统中安装hexo1sudo npm install -g hexo 初始化blog目录12cd your/blog/dirhexo init 在目录中安装所依赖的库1npm install 修改 _config.yml">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo + github 发布静态博客">
+<meta property="og:url" content="http://deerlux.github.io/blog/2014/10/11/hexo-blog/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="网上的教程很多，我这里只讲一下干货，也是自己的一个备忘。 安装node.js以archlinux下为例，其他的发行版请自行查找相关的软件包。 1pacman -S nodejs 系统中安装hexo1sudo npm install -g hexo 初始化blog目录12cd your/blog/dirhexo init 在目录中安装所依赖的库1npm install 修改 _config.yml">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-20T15:13:18.233Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hexo + github 发布静态博客">
+<meta name="twitter:description" content="网上的教程很多，我这里只讲一下干货，也是自己的一个备忘。 安装node.js以archlinux下为例，其他的发行版请自行查找相关的软件包。 1pacman -S nodejs 系统中安装hexo1sudo npm install -g hexo 初始化blog目录12cd your/blog/dirhexo init 在目录中安装所依赖的库1npm install 修改 _config.yml">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head></html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://deerlux.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-hexo-blog" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/10/11/hexo-blog/" class="article-date">
+  <time datetime="2014-10-11T15:48:20.000Z" itemprop="datePublished">2014-10-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      hexo + github 发布静态博客
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网上的教程很多，我这里只讲一下干货，也是自己的一个备忘。</p>
+<h1 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h1><p>以archlinux下为例，其他的发行版请自行查找相关的软件包。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S nodejs</span><br></pre></td></tr></table></figure>
+<h1 id="系统中安装hexo"><a href="#系统中安装hexo" class="headerlink" title="系统中安装hexo"></a>系统中安装hexo</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g hexo</span><br></pre></td></tr></table></figure>
+<h1 id="初始化blog目录"><a href="#初始化blog目录" class="headerlink" title="初始化blog目录"></a>初始化blog目录</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> your/blog/dir</span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<h1 id="在目录中安装所依赖的库"><a href="#在目录中安装所依赖的库" class="headerlink" title="在目录中安装所依赖的库"></a>在目录中安装所依赖的库</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<h1 id="修改-config-yml-文件"><a href="#修改-config-yml-文件" class="headerlink" title="修改 _config.yml 文件"></a>修改 <code>_config.yml</code> 文件</h1><p>主要是要修改下面几项</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">title:</span>          <span class="comment"># 你的博客名称</span></span><br><span class="line"><span class="attr">author:</span>         <span class="comment"># 你的名字</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh_CN</span> <span class="comment"># 设置中文</span></span><br><span class="line"></span><br><span class="line"><span class="attr">url:</span> <span class="attr">http://deerlux.github.io</span>       <span class="comment"># 设置你要发布的地址</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/blog</span>                         <span class="comment"># 设置你要发布地址的子目录</span></span><br><span class="line"></span><br><span class="line"><span class="attr">theme:</span> <span class="string">pacman</span>                       <span class="comment"># 设置要使用的主题，个人推荐pacman，有很多国内适用的特性。</span></span><br><span class="line"></span><br><span class="line"><span class="attr">deploy:</span>                             <span class="comment"># 如果你和我一样用github pages发布，请参照</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">github</span></span><br><span class="line"><span class="attr">  repo:</span> <span class="attr">https://github.com/deerlux/blog.git</span></span><br><span class="line"><span class="attr">  branch:</span> <span class="string">gh-pages</span></span><br><span class="line"><span class="attr">  message:</span> <span class="string">Updated</span> <span class="string">by</span> <span class="string">hexo</span>          <span class="comment"># 这是git提交的消息，你可以改成你需要的。</span></span><br></pre></td></tr></table></figure>
+<p>不过一直没有搞定如何设置github的repo为ssh格式的。</p>
+<h1 id="安装并设置pacman主题"><a href="#安装并设置pacman主题" class="headerlink" title="安装并设置pacman主题"></a>安装并设置pacman主题</h1><p>首先到github上下载此主题。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> your/blog/dir/themes</span><br><span class="line">git <span class="built_in">clone</span> git@github.com/A-limon/pacman</span><br></pre></td></tr></table></figure>
+<p>然后进行配置，如果你有新浪微博、多说评论引擎等，可以直接进行配置，改写<br>themes/pacman/_config.yml文件即可。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://deerlux.github.io/blog/2014/10/11/hexo-blog/" data-id="cjou9po010009owimrwdbnza5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/10/14/数据之巅/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          数据之巅——从美国人历史上如何重视数据讲起大数据的前生今世
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/10/11/三体/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">三体——中国作家写的具有世界级水准的科幻小说</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Misc/">Misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-部署/">git 部署</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统运维/">系统运维</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟化/">虚拟化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Linux/" style="font-size: 20px;">Linux</a> <a href="/tags/Misc/" style="font-size: 10px;">Misc</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/git-部署/" style="font-size: 10px;">git 部署</a> <a href="/tags/系统运维/" style="font-size: 10px;">系统运维</a> <a href="/tags/虚拟化/" style="font-size: 10px;">虚拟化</a> <a href="/tags/读书笔记/" style="font-size: 20px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/helloWorld/">helloWorld</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/20/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/21/gitolite/">利用gitolite实现自动部署的简易实现方式</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/17/archlinux-nginx-fastcgi/">Archlinux下安装nginx、Fastcgi</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/08/docker-systemd-socket-activation/">利用systemd按需激Docker容器</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

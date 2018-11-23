@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>国产操作系统与数据库——忍不住的吐槽 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="因工作原因，一些系统要上国产化的操作系统、数据库和中间件，和这些国产化系统软件的技术人员打交道碰到了一些让我无语的事情。 iptables -F 我中间想和别的机子传一些文件，一看系统中的ssh服务已经启动起来了，于是在另外一台机器上用ssh登录我的机器，但是明明是能够ping通的 ssh my_ip 却出现了 no route to host MY_IP错误，我一看就怀疑可能是系统的iptabl">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="国产操作系统与数据库——忍不住的吐槽">
+<meta property="og:url" content="http://deerlux.github.io/blog/2014/10/24/guochan-os/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="因工作原因，一些系统要上国产化的操作系统、数据库和中间件，和这些国产化系统软件的技术人员打交道碰到了一些让我无语的事情。 iptables -F 我中间想和别的机子传一些文件，一看系统中的ssh服务已经启动起来了，于是在另外一台机器上用ssh登录我的机器，但是明明是能够ping通的 ssh my_ip 却出现了 no route to host MY_IP错误，我一看就怀疑可能是系统的iptabl">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-20T15:13:18.233Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="国产操作系统与数据库——忍不住的吐槽">
+<meta name="twitter:description" content="因工作原因，一些系统要上国产化的操作系统、数据库和中间件，和这些国产化系统软件的技术人员打交道碰到了一些让我无语的事情。 iptables -F 我中间想和别的机子传一些文件，一看系统中的ssh服务已经启动起来了，于是在另外一台机器上用ssh登录我的机器，但是明明是能够ping通的 ssh my_ip 却出现了 no route to host MY_IP错误，我一看就怀疑可能是系统的iptabl">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head></html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://deerlux.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-guochan-os" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/10/24/guochan-os/" class="article-date">
+  <time datetime="2014-10-24T13:21:33.000Z" itemprop="datePublished">2014-10-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      国产操作系统与数据库——忍不住的吐槽
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因工作原因，一些系统要上国产化的操作系统、数据库和中间件，和这些国产化系统软件<br>的技术人员打交道碰到了一些让我无语的事情。</p>
+<h1 id="iptables-F"><a href="#iptables-F" class="headerlink" title="iptables -F "></a>iptables -F </h1><p>我中间想和别的机子传一些文件，一看系统中的ssh服务已经启动起来了，于是在另外一台<br>机器上用ssh登录我的机器，但是明明是能够ping通的 <code>ssh my_ip</code> 却出现了 <code>no
+route to host MY_IP</code>错误，我一看就怀疑可能是系统的iptables做了什么手脚，但无奈<br>我不会设置iptables。于是叫麒麟操作系统相关的技术人员来，非说我IP地址设置有问题<br>，弄了一通他没有弄明白，可能是技术支持的时候也没有碰到过我这样的用户，非要尝试<br>一下这种东西，最后信我的话了，直接用 <code>iptables -F</code> 给我把防火墙的东西清掉了。</p>
+<p>我瞬间无语，其实我虽然不懂iptables的配置，但这条命令我还是懂得，就是删除所有的<br>iptables规则，那你他么还给我系统装什么iptables啊，国产化系统的安全就是这样保障<br>的啊？再说了，这也没有解决我问题啊，再重启还是不能，只是暂时可以通了。</p>
+<h1 id="chomd-R-777"><a href="#chomd-R-777" class="headerlink" title="chomd -R 777 *"></a>chomd -R 777 *</h1><p>还有中间件的厂商更是另人蛋疼，号称是通过了公安部XXX认证的中间件厂商，给我的东西<br>是个压缩包，直接解压之后就可以用的，但是呢其中bin目录有些可执行的文件没有设置可<br>执行权限，我猜人家是在 windows 下打的压缩包，要不然怎会出现这种低级问题，不过人<br>家解决的方式也倒是简单，直接到了中间件解压后的根目录，敲了一条另我嘴巴合不拢的<br>命令:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod -R 777 *</span><br></pre></td></tr></table></figure>
+<p>看来人家还是习惯在windows下所有用户对所有文件都可读写的传统，这样的做WEB服务的<br>中间件能保证安全？可是我用Linux用点强迫症，ls后看到满屏的绿色，我气就不打一处来<br>。</p>
+<h1 id="root用户安装的数据库只能root用"><a href="#root用户安装的数据库只能root用" class="headerlink" title="root用户安装的数据库只能root用"></a>root用户安装的数据库只能root用</h1><p>数据库产品也是，技术人员演示的是用root用户登录X系统，然后安装，然后运行数据库的<br>管理台。我是用普通用户登录，sudo安装，然后用普通用户打开控制台，不行。用sudo在<br>命令行里打开控制台可以。但是用普通用户打开控制台就报一个权限的错误，技术人员来<br>后坚持说root用户安装的就只能root用户用，如果想用普通用户用的话就用普通用户安装<br>。后来来了一个比他更懂行一些的，说可以将安装目录所有文件的属主改成我的登录用户<br>。我无语。后来我找到了问题的根源了，每个用户打开控制台的时候都会往安装目录下的<br>一个.manager目录里写log，如果普通用户没有对这个目录的写权限则就会报错。数据库系<br>统安装的时候将安装目录的权限都设置成了组可写的，因此比较恰当的做法是将允许使用<br>数据库的用户的组添加一个这个数据库目录的组即可。</p>
+<p>由此我算得出了两个结论：</p>
+<ul>
+<li>技术支持人员素质太差，基础的Linux安全以及相关的内容知识匮乏。软件设计得不符合</li>
+<li>Linux的规范，普通用户的log文件按照惯例应该是写在$HOME/.XXX目录下的，为什么要<br>往安装目录下写呢，典型的单用户windows系统的习惯。</li>
+</ul>
+<p>我们任重道远啊。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://deerlux.github.io/blog/2014/10/24/guochan-os/" data-id="cjou9pnzv0003owimvxu1d219" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/10/31/understanding-docker/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          理解Docker
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/10/23/sqlalchemy/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">sqlalchemy的简单用法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Misc/">Misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-部署/">git 部署</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统运维/">系统运维</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟化/">虚拟化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Linux/" style="font-size: 20px;">Linux</a> <a href="/tags/Misc/" style="font-size: 10px;">Misc</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/git-部署/" style="font-size: 10px;">git 部署</a> <a href="/tags/系统运维/" style="font-size: 10px;">系统运维</a> <a href="/tags/虚拟化/" style="font-size: 10px;">虚拟化</a> <a href="/tags/读书笔记/" style="font-size: 20px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/helloWorld/">helloWorld</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/20/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/21/gitolite/">利用gitolite实现自动部署的简易实现方式</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/17/archlinux-nginx-fastcgi/">Archlinux下安装nginx、Fastcgi</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/08/docker-systemd-socket-activation/">利用systemd按需激Docker容器</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

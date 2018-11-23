@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>sqlalchemy的简单用法 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="数据库中表结构是现成的情况下ORM前几天想自己在网上抓些东西然后存放在数据库中以便于后续的数据分析，只是不想自己用DB-API写SQL语句去操作数据，所以才想用ORM的方式，可是看了半天sqlalchemy的文档，都是在讲如何进行建库、建关系等，可是问题是我们经常要操作的数据库，库表的建立并不是通过ORM的方式建，更希望是通过原始的SQL语句去建，对一个现成的数据库进行ORM方式访问有没有更方便的">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqlalchemy的简单用法">
+<meta property="og:url" content="http://deerlux.github.io/blog/2014/10/23/sqlalchemy/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="数据库中表结构是现成的情况下ORM前几天想自己在网上抓些东西然后存放在数据库中以便于后续的数据分析，只是不想自己用DB-API写SQL语句去操作数据，所以才想用ORM的方式，可是看了半天sqlalchemy的文档，都是在讲如何进行建库、建关系等，可是问题是我们经常要操作的数据库，库表的建立并不是通过ORM的方式建，更希望是通过原始的SQL语句去建，对一个现成的数据库进行ORM方式访问有没有更方便的">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-20T15:13:18.233Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sqlalchemy的简单用法">
+<meta name="twitter:description" content="数据库中表结构是现成的情况下ORM前几天想自己在网上抓些东西然后存放在数据库中以便于后续的数据分析，只是不想自己用DB-API写SQL语句去操作数据，所以才想用ORM的方式，可是看了半天sqlalchemy的文档，都是在讲如何进行建库、建关系等，可是问题是我们经常要操作的数据库，库表的建立并不是通过ORM的方式建，更希望是通过原始的SQL语句去建，对一个现成的数据库进行ORM方式访问有没有更方便的">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head></html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://deerlux.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-sqlalchemy" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/10/23/sqlalchemy/" class="article-date">
+  <time datetime="2014-10-23T13:43:47.000Z" itemprop="datePublished">2014-10-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      sqlalchemy的简单用法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="数据库中表结构是现成的情况下ORM"><a href="#数据库中表结构是现成的情况下ORM" class="headerlink" title="数据库中表结构是现成的情况下ORM"></a>数据库中表结构是现成的情况下ORM</h2><p>前几天想自己在网上抓些东西然后存放在数据库中以便于后续的数据分析，只是不想自己<br>用DB-API写SQL语句去操作数据，所以才想用ORM的方式，可是看了半天sqlalchemy的文档<br>，都是在讲如何进行建库、建关系等，可是问题是我们经常要操作的数据库，库表的建立<br>并不是通过ORM的方式建，更希望是通过原始的SQL语句去建，对一个现成的数据库进行ORM<br>方式访问有没有更方便的方法呢？这种情况下有没有一种更方便的方式去访问数据库？答<br>案当然是肯定的。</p>
+<p>比如我用来存储用户信息的sqlite数据库 (test.db) 结构是这样的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> <span class="keyword">users</span> (</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">integer</span> primary <span class="keyword">key</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">    <span class="keyword">password</span> <span class="built_in">varchar</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>sqlalchemy 0.9.1 之后增加了一种automap_base的机制，可以使现成的数据库中的数据结<br>构反射到类上。用来访问上述数据库中的表只需要简单几句就可以完成映射：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding=utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> sqlalchemy</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> Session</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.ext.automap <span class="keyword">import</span> automap_base</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    engine_str = <span class="string">'sqlite:///:test.db'</span></span><br><span class="line">    engine = sqlalchemy.create_engine(engine_str)</span><br><span class="line"></span><br><span class="line">    session = Session(engine)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 下面这两句话就完成了ORM映射 Base.classes.XXXX即为映射的类</span></span><br><span class="line">    <span class="comment"># Base.metadata.tables['XXX']即为相应的表</span></span><br><span class="line">    Base = automap_base()</span><br><span class="line">    Base.prepare(engine, reflect = <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 查询操作</span></span><br><span class="line">    result = session.query(Base.classes.users).all()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 插入操作</span></span><br><span class="line">    item = Base.classes.users(name=<span class="string">'lxq'</span>, password=<span class="string">'1234'</span>)</span><br><span class="line">    session.add(item)</span><br><span class="line">    session.commit()</span><br><span class="line">    </span><br><span class="line">    session.close()</span><br></pre></td></tr></table></figure>
+<p>简单定义了两个类之后，不用关心数据表的内部实现，sqlalchemy会实现自动的映射，随<br>后手册上的很多操作都可以正常使用了。</p>
+<h2 id="数据的修改"><a href="#数据的修改" class="headerlink" title="数据的修改"></a>数据的修改</h2><p>ORM系统对数据库中访问到的每一行数据会映射为一个唯一的Table对象，因此，当需要对<br>数据修改的时候，找到这行数据然后直接改其元素然后commit即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ed_user = session.query(User).filter_by(name=<span class="string">'ed'</span>).first()</span><br><span class="line">ed_user.name = <span class="string">'love'</span></span><br><span class="line">session.commit()</span><br></pre></td></tr></table></figure>
+<h2 id="批量插入"><a href="#批量插入" class="headerlink" title="批量插入"></a>批量插入</h2><p>利用单纯的ORM方式进行大批量的插入数据，由于是调用多条INSERT语句，因此效率十分低<br>下，session.add_all函数实际上也是调用了多条INSERT语句，如果想批量插入数据，可以<br>进行如下处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">engine.execute(User.__table__.insert(), </span><br><span class="line">    [&#123;<span class="string">'name'</span>:<span class="string">'hello'</span>, <span class="string">'password'</span>:<span class="string">'1234'</span>&#125;,</span><br><span class="line">    &#123;<span class="string">'name'</span>:<span class="string">'hello2'</span>, <span class="string">'password'</span>:<span class="string">'1234'</span>&#125;])</span><br></pre></td></tr></table></figure>
+<h2 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h2><p>Lazy connecting<br><del>~</del><del>~</del><del>~</del>~</p>
+<p>create_engine 按照手册上的说法是lazy_connecting，当你在create_engine的时候并不<br>会真正的建立数据库连接，而当第一次进行数据库相关操作的时候才会真正建立连接。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://deerlux.github.io/blog/2014/10/23/sqlalchemy/" data-id="cjou9po03000bowim6s08oe4e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/10/24/guochan-os/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          国产操作系统与数据库——忍不住的吐槽
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/10/14/数据之巅/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">数据之巅——从美国人历史上如何重视数据讲起大数据的前生今世</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Misc/">Misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-部署/">git 部署</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统运维/">系统运维</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟化/">虚拟化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Linux/" style="font-size: 20px;">Linux</a> <a href="/tags/Misc/" style="font-size: 10px;">Misc</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/git-部署/" style="font-size: 10px;">git 部署</a> <a href="/tags/系统运维/" style="font-size: 10px;">系统运维</a> <a href="/tags/虚拟化/" style="font-size: 10px;">虚拟化</a> <a href="/tags/读书笔记/" style="font-size: 20px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/helloWorld/">helloWorld</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/20/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/21/gitolite/">利用gitolite实现自动部署的简易实现方式</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/17/archlinux-nginx-fastcgi/">Archlinux下安装nginx、Fastcgi</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/08/docker-systemd-socket-activation/">利用systemd按需激Docker容器</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

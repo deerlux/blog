@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>理解Docker | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="原文出自https://docs.docker.com/introduction/understanding-docker/， 本文由&amp;#100;&amp;#101;&amp;#x65;&amp;#114;&amp;#108;&amp;#117;&amp;#120;&amp;#64;&amp;#x31;&amp;#54;&amp;#51;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#x6d;翻译。 什么是Docker？Docker是一个用于开发、装载和运行程度的开放平台，可使你的程">
+<meta name="keywords" content="虚拟化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解Docker">
+<meta property="og:url" content="http://deerlux.github.io/blog/2014/10/31/understanding-docker/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="原文出自https://docs.docker.com/introduction/understanding-docker/， 本文由&amp;#100;&amp;#101;&amp;#x65;&amp;#114;&amp;#108;&amp;#117;&amp;#120;&amp;#64;&amp;#x31;&amp;#54;&amp;#51;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#x6d;翻译。 什么是Docker？Docker是一个用于开发、装载和运行程度的开放平台，可使你的程">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://docs.docker.com/article-img/architecture.svg">
+<meta property="og:updated_time" content="2018-11-20T15:13:18.233Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解Docker">
+<meta name="twitter:description" content="原文出自https://docs.docker.com/introduction/understanding-docker/， 本文由&amp;#100;&amp;#101;&amp;#x65;&amp;#114;&amp;#108;&amp;#117;&amp;#120;&amp;#64;&amp;#x31;&amp;#54;&amp;#51;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#x6d;翻译。 什么是Docker？Docker是一个用于开发、装载和运行程度的开放平台，可使你的程">
+<meta name="twitter:image" content="https://docs.docker.com/article-img/architecture.svg">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head></html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://deerlux.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-understanding-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/10/31/understanding-docker/" class="article-date">
+  <time datetime="2014-10-31T14:16:39.000Z" itemprop="datePublished">2014-10-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      理解Docker
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>原文出自<a href="https://docs.docker.com/introduction/understanding-docker/，" target="_blank" rel="noopener">https://docs.docker.com/introduction/understanding-docker/，</a> 本文由<a href="mailto:&#100;&#101;&#x65;&#114;&#108;&#117;&#120;&#64;&#x31;&#54;&#51;&#x2e;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#100;&#101;&#x65;&#114;&#108;&#117;&#120;&#64;&#x31;&#54;&#51;&#x2e;&#x63;&#111;&#x6d;</a>翻译。</p>
+<h1 id="什么是Docker？"><a href="#什么是Docker？" class="headerlink" title="什么是Docker？"></a>什么是Docker？</h1><p>Docker是一个用于开发、装载和运行程度的开放平台，可使你的程序迁移更加便捷。在Docker中可以将你的应用程序和基础设施层隔离，并且还可以将你的基础设施当作程序一样进行管理。Docker可以帮助你更加快速地打包你代码、更加快速地测试、更加快速地部署，并且可以减少写代码到部署运行代码的周期。</p>
+<p>Docker通过将一个轻量级的容器虚拟化平台和一组标准工作流程、工具进行集成，来帮助你方便地管理和部署应用。</p>
+<p>核心的是，Docker提供了一种在一个安全隔离的环境中运行几乎所有程序方式，这种隔离性和安全性允许你在同一主机上同时运行多个容器，而容器的这种轻量级特性，意味着你可以节省更多的硬件资源，因为你不必消耗运行hypervisor所需要的额外负载的。</p>
+<p>围绕容器虚拟化Docker提供了一些工具和一个平台，可为你提供以下帮助：</p>
+<ul>
+<li>将应用程序（包括支撑的组件）放入docker容器中；</li>
+<li>将这些容器打包并分发给你的团队，以便于后续的开发和测试；</li>
+<li>将这些容器部署到生产环境中，即可以是本地的数据中心也可以在云端。</li>
+</ul>
+<h1 id="我可以用Docker做些什么？"><a href="#我可以用Docker做些什么？" class="headerlink" title="我可以用Docker做些什么？"></a>我可以用Docker做些什么？</h1><h2 id="快速分发你的应用"><a href="#快速分发你的应用" class="headerlink" title="快速分发你的应用"></a>快速分发你的应用</h2><p>Docker是开发过程中较为理想的助手，它允许你在包含了你的应用和服务的本地容器中进行开发，然后帮你完成集成和部署。</p>
+<p>例如，你的开发人员可以在本地写代码然后通过Docker与其他同事共享，当他们完成了各自的开发任务后，可以将他们的代码推送到一个测试的环境中进行测试，完成测试后便可以将相应的Docker镜像部署到生产环境中。</p>
+<h2 id="更方便地进行部署和调整规模"><a href="#更方便地进行部署和调整规模" class="headerlink" title="更方便地进行部署和调整规模"></a>更方便地进行部署和调整规模</h2><p>Docker这种基于容器的平台具有高度的便携性，它可以无缝地运行于开发者的本地主机、数据中心其他的物理机或虚拟机、或者云端。</p>
+<p>Docker的便携性和其天然的轻量特性易于实现动态地负载管理，你可以利用Docker快速地增减应用和服务的部署规模，Docker的速度保证了这种规模的调整近乎实时。</p>
+<h2 id="更高密度的部署应用和运行更多的应用"><a href="#更高密度的部署应用和运行更多的应用" class="headerlink" title="更高密度的部署应用和运行更多的应用"></a>更高密度的部署应用和运行更多的应用</h2><p>由于Docker轻量并且快速，因此相对于基于Hypervisor的虚拟机的部署方式，Docker提供了一种更可行和划算的替代方案，这对于高密度部署环境尤其有用，例如在构建私有云或平台即服务环境时，当然，当你想在有限的资源里部署更多的应用时，Docker对于小中型的部署也非常有用。</p>
+<h1 id="Docker主要包括哪些组件？"><a href="#Docker主要包括哪些组件？" class="headerlink" title="Docker主要包括哪些组件？"></a>Docker主要包括哪些组件？</h1><p>Docker主要包括两个组件：</p>
+<ul>
+<li>Docker: 开源的容器虚拟化平台；</li>
+<li><a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a> ：用于分享和管理Docker容器的软件即服务平台。</li>
+</ul>
+<p><strong>注</strong>: Docker在Apache 2.0开源协议下进行授权。</p>
+<h1 id="Docker的架构？"><a href="#Docker的架构？" class="headerlink" title="Docker的架构？"></a>Docker的架构？</h1><p>Docker是一种Client/Server的架构，Docker客户端与Docker daemon进行交互，daemon负责构建、运行和发布Docker容器。客户端即可以和服务端运行在同一个系统中，也可以连接远程的daemon。Docker的客户端的daemon通过RESTful API进行sockets 通信。</p>
+<p><img src="https://docs.docker.com/article-img/architecture.svg" alt="docker-architecture.svg"></p>
+<h2 id="Docker守护进程"><a href="#Docker守护进程" class="headerlink" title="Docker守护进程"></a>Docker守护进程</h2><p>就像上图所示，Docker守护进程(daemon)在主机上运行，用户不能直接和守护进程打交道，但是可以通过docker客户端与其进行交互。</p>
+<h2 id="Docker客户端"><a href="#Docker客户端" class="headerlink" title="Docker客户端"></a>Docker客户端</h2><p>Docker客户端——<code>docker</code>二进制文件的功能之一——是Docker的初始用户界面，它接收用户的命令并反馈，并且与Docker的守护进行交互。</p>
+<h2 id="Docker内部机制"><a href="#Docker内部机制" class="headerlink" title="Docker内部机制"></a>Docker内部机制</h2><p>理解Docker的内部机制，你需要明白如下三个组件：</p>
+<ul>
+<li>Docker镜像</li>
+<li>Docker注册中心</li>
+<li>Docker容器</li>
+</ul>
+<h3 id="Docker镜像"><a href="#Docker镜像" class="headerlink" title="Docker镜像"></a>Docker镜像</h3><p>Docker镜像是一个只读的模块。例如，一个镜像可以包含一个安装了apache WEB服务应用的Ubuntu操作系统。镜像用来创建Docker容器。Docker提供了构建新镜像或升级原有镜像的较为便利的方式，或者你也可以下载别人已经创建好的镜像。Docker镜像是Docker的<strong>构建</strong>组件。</p>
+<h3 id="Docker注册中心"><a href="#Docker注册中心" class="headerlink" title="Docker注册中心"></a>Docker注册中心</h3><p>Docker注册中心用于上传和下载镜像，有公共注册中心和私有注册中心两种。公共注册中心为<a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a>，它提供了大量的现成镜像，你可以构建自己的镜像上传到上面，也可以在上面下载别人构建的镜像。Docker注册中心是Docker的<strong>发布</strong>组件。</p>
+<h3 id="Docker容器"><a href="#Docker容器" class="headerlink" title="Docker容器"></a>Docker容器</h3><p>Docker容器与一个目录很类似，它包含了一个应用程序运行所需要的一切内容。每个容器都是基于一个Docker镜像制作的。Docker容器可被运行、开始、停止、迁移或者是删除。每个容器均是一个隔离的、安全的应用平台。Docker容器是Docker的<strong>运行</strong>组件。</p>
+<h2 id="Docker怎样工作的"><a href="#Docker怎样工作的" class="headerlink" title="Docker怎样工作的"></a>Docker怎样工作的</h2><p>至此，我们已经知道了：</p>
+<ol>
+<li>你可以构建用于存储你的应用程序的镜像；</li>
+<li>你可以从Docker镜像中创建容器用来运行你的应用；</li>
+<li>你可以通过<a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a>或者你自己的注册中心来共享Docker镜像</li>
+</ol>
+<p>那我们看看Docker是怎么将这些元素组合在一起工作的。</p>
+<h3 id="Docker镜像是如何工作的"><a href="#Docker镜像是如何工作的" class="headerlink" title="Docker镜像是如何工作的"></a>Docker镜像是如何工作的</h3><p>我们已经知道Docker镜像实质上是一些用于加载Docker容器的只读模板，每个镜像包括很多层。Docker利用<a href="http://en.wikipedia.org/wiki/UnionFS" target="_blank" rel="noopener">union file systems</a>将这些层组合为一个镜像。Union file systems允许相互隔离的文件或目录透明的叠加在一起，而呈现为一个统一的文件系统。</p>
+<p>Docker如此轻量化的原因也是由于这些层的存在。当你对一个Docker镜像进行修改时——例如将一个应用升级为一个新的版本——会构建一个新的层，因此，与虚拟机的替换整个镜像或完全构建的方式不同，Docker仅对相关的层进行添加或升级。所以你仅需要发布镜像的更新部分而不必发布整个镜像，这种方式使得镜像的发布更加快速和简单。</p>
+<p>每个镜像始于一个基础镜像，例如：<code>ubuntu</code>便是一个基础的Ubuntu镜像，<code>fedora</code>是一个基础的Fedora镜像。你也可以将你自己制作的镜像作为基础镜像，例如你可以将一个Apache镜像作为一个Web应用的基础镜像。</p>
+<blockquote>
+<p>注意：Docker一般从<a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a>上获取基础镜像。</p>
+</blockquote>
+<p>Docker镜像从这些基础镜像中按照一系列的步骤进行制作，我们称这些步骤为<strong>指令</strong>，每个指令在你的镜像中创建一个新的层，指令包括以下行为：</p>
+<ul>
+<li>运行一条命令；</li>
+<li>添加一个文件或目录；</li>
+<li>创建一个环境变量；</li>
+<li>从此镜像中加载一个容器时需要运行的进程。</li>
+</ul>
+<p>这些指令存储在<code>Dockerfile</code>中，Docker在构建镜像过程中读取这个<code>Dockerfile</code>，运行里面的指令并返回最终的镜像。</p>
+<h3 id="Docker注册中心如何工作的"><a href="#Docker注册中心如何工作的" class="headerlink" title="Docker注册中心如何工作的"></a>Docker注册中心如何工作的</h3><p>Docker注册中心是Docker镜像的存储中心，当你构建完一个镜像后便可以将其推送到<a href="https://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a>或你自己的注册中心。</p>
+<p>利用Docker客户端，你可以搜索已经发布的镜像，然后将其拉取到你的Docker主机上，以便于从这些镜像中构建容器。</p>
+<p><a href="https://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a>为镜像提供了公共的和私有的存储空间。公共的存储空间任何人均可以在上面搜索和下载，私有存储空间仅对你本人或你的团队开放搜索以及拉取下载，你可以通过<a href="https://hub.docker.com/plans" target="_blank" rel="noopener">这里</a>注册一个私有的存储空间。</p>
+<h3 id="容器是如何工作的"><a href="#容器是如何工作的" class="headerlink" title="容器是如何工作的"></a>容器是如何工作的</h3><p>一个容器包括操作系统、用户添加的文件以及相关的元数据。我们知道，每个容器都是从镜像中构建出来的，这个镜像告诉Docker容器用到什么资源、当容器加载时启动哪个进程以及容器启动时的其他配置。Docker镜像是只读的，当Docker从一个镜像运行一个容器时，它会在镜像的上层添加一个用于运行应用的可读写的层（利用的就是上文提到的union file system）。</p>
+<h3 id="运行一个容器时到底发生了什么"><a href="#运行一个容器时到底发生了什么" class="headerlink" title="运行一个容器时到底发生了什么"></a>运行一个容器时到底发生了什么</h3><p>Docker客户端通过直接运行<code>docker</code>或者通过API调用的方式，可以通知Docker的守护进程运行一个容器。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo docker run -i -t ubuntu /bin/bash</span></span><br></pre></td></tr></table></figure>
+<p>我们来看一下这个命令，Docker客户端利用<code>docker</code>命令跟一个<code>run</code>的选项启动一个容器，一个最小配置的Docker客户端运行一个容器需要告诉Docker守护进程以下事项：</p>
+<ul>
+<li>此容器基于什么镜像来构建，此处是<code>ubuntu</code>——一个基础的Ubuntu镜像；</li>
+<li>需要在容器中运行的命令，此处是<code>/bin/bash</code>——在容器中启动一个Bash Shell。</li>
+</ul>
+<p>那么我们看看运行上述命令时到底发生了什么？</p>
+<p>按照顺序，Docker依次干了如下事情：</p>
+<ul>
+<li><strong>拉取<code>ubuntu</code>镜像</strong> : Docker首先检查一下<code>ubuntu</code>镜像在本地服务器上存不存在，如果不存在，则自动从<a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a>中下载，如果已经存在则直接利用这个镜像来启动一个新的容器。</li>
+<li><strong>创建一个新的容器</strong>: 如果Docker本地服务器中存在这个镜像，那么就据此来启动一个容器。</li>
+<li><strong>分配一个文件每户并且将其挂载到一个可读写的层</strong>: 容器在此文件系统中被创建，并且将其作为一个可读写的层添加到镜像中。</li>
+<li><strong>分配一个网络或桥接的接口</strong>: 创建一个网络的接口以便于Docker容器能够访问本机。</li>
+<li><strong>设置一个IP地址</strong>: 为此容器从地址池中找到并绑定一个IP地址。</li>
+<li><strong>执行指定的进程</strong>: 运行你的应用程序，然后；</li>
+<li><strong>获取并提供应用程序的输出</strong>: 连接标准输入、标准输出和标准错误接口，这样你便可以观察到程序运行的一切。</li>
+</ul>
+<p>现在你已经运行了一个容器，这样你便可以管理你的容器、与应用程序进行交互，当运行结束是停止或者删除你的容器。</p>
+<h2 id="底层技术问题"><a href="#底层技术问题" class="headerlink" title="底层技术问题"></a>底层技术问题</h2><p>Docker是用Go语言实现的，用到了一些Linux内核的特性实现上述功能。</p>
+<h3 id="命名空间（namespaces）"><a href="#命名空间（namespaces）" class="headerlink" title="命名空间（namespaces）"></a>命名空间（namespaces）</h3><p>Docker在为容器提供一个隔离的工作空间时，用到了<code>命名空间</code>的技术，当你运行一个容器时，Docker会为此容器创建一组命名空间。</p>
+<p>这样便可以提供一个隔离的层：每个容器运行在自己的命名空间中，而外部不能访问这个层。</p>
+<p>Docker用到的一些命名空间有：</p>
+<ul>
+<li><strong><code>pid</code>命名空间</strong>: 用于隔离进程（PID：Process ID）；</li>
+<li><strong><code>net</code>命名空间</strong>: 用于管理网络；</li>
+<li><strong><code>ipc</code>命名空间</strong>: 用于访问IPC资源（IPC：InterProcess Communication）；</li>
+<li><strong><code>mnt</code>命名空间</strong>: 用于管理挂载点（MNT：Mount）；</li>
+<li><strong><code>uts</code>命名空间</strong>: 用于隔离内核和版本标识（UTS：Unix Timesharing System）。</li>
+</ul>
+<h3 id="控制组（Control-Groups）"><a href="#控制组（Control-Groups）" class="headerlink" title="控制组（Control Groups）"></a>控制组（Control Groups）</h3><p>Docker还用到了另外一项技术叫<code>cgroups</code>或者叫控制组（control groups）。实现程序运行环境的隔离的关键在于使这些程序只用到他们需要的资源，这就能够保证这些容器是主机服务环境小社会中的好市民。控制组允许Docker在不同的容器之间共享硬件资源，需要时添加一些限制和约束，例如限制一个容器最大访问内存量。</p>
+<h3 id="统一文件系统（Union-file-systems）"><a href="#统一文件系统（Union-file-systems）" class="headerlink" title="统一文件系统（Union file systems）"></a>统一文件系统（Union file systems）</h3><p>统一文件系统或者说是UnionFS，是创建层的时候用到的文件系统，使文件系统非常轻量和快速。Docker使用统一文件系统为容器构建blocks，Docker可以使用几种不同的文件系统：AUFS、btrfs、vfs以及DeviceMapper。</p>
+<h3 id="容器格式"><a href="#容器格式" class="headerlink" title="容器格式"></a>容器格式</h3><p>Docker容器将这些组件合并在一起，我们称之为容器格式，容器的缺省格式称为<code>libcontainer</code>。Docker还支持利用<a href="https://linuxcontainers.org/" target="_blank" rel="noopener">LXC</a>技术的传统Linux容器格式，未来还将会支持其他的容器格式，例如：与BSD Jails或者Solaris Zones实现整合。</p>
+<h1 id="下一步"><a href="#下一步" class="headerlink" title="下一步"></a>下一步</h1><p>安装Docker，请参照<a href="https://docs.docker.com/installation/#installation" target="_blank" rel="noopener">installation section</a></p>
+<p>Docker用户指南，请参照<a href="https://docs.docker.com/userguide/" target="_blank" rel="noopener">深入学习Docker</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://deerlux.github.io/blog/2014/10/31/understanding-docker/" data-id="cjou9po0i000sowimdct8lsza" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/虚拟化/">虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/11/15/haomama/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          好妈妈胜过好老师——现代儿童教育启示录
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/10/24/guochan-os/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">国产操作系统与数据库——忍不住的吐槽</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Misc/">Misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-部署/">git 部署</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统运维/">系统运维</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟化/">虚拟化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Linux/" style="font-size: 20px;">Linux</a> <a href="/tags/Misc/" style="font-size: 10px;">Misc</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/git-部署/" style="font-size: 10px;">git 部署</a> <a href="/tags/系统运维/" style="font-size: 10px;">系统运维</a> <a href="/tags/虚拟化/" style="font-size: 10px;">虚拟化</a> <a href="/tags/读书笔记/" style="font-size: 20px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/helloWorld/">helloWorld</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/20/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/21/gitolite/">利用gitolite实现自动部署的简易实现方式</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/17/archlinux-nginx-fastcgi/">Archlinux下安装nginx、Fastcgi</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/08/docker-systemd-socket-activation/">利用systemd按需激Docker容器</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
