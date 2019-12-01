@@ -5,19 +5,19 @@
   
   <title>理解Docker | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="原文出自https://docs.docker.com/introduction/understanding-docker/， 本文由&amp;#100;&amp;#101;&amp;#x65;&amp;#114;&amp;#108;&amp;#117;&amp;#120;&amp;#64;&amp;#x31;&amp;#54;&amp;#51;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#x6d;翻译。 什么是Docker？Docker是一个用于开发、装载和运行程度的开放平台，可使你的程">
+  <meta name="description" content="原文出自https://docs.docker.com/introduction/understanding-docker/， 本文由&amp;#100;&amp;#101;&amp;#101;&amp;#114;&amp;#108;&amp;#117;&amp;#120;&amp;#x40;&amp;#49;&amp;#x36;&amp;#x33;&amp;#46;&amp;#99;&amp;#x6f;&amp;#109;翻译。 什么是Docker？Docker是一个用于开发、装载和运行程度的开放平台，可使你的程">
 <meta name="keywords" content="虚拟化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解Docker">
 <meta property="og:url" content="http://deerlux.github.io/blog/2014/10/31/understanding-docker/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="原文出自https://docs.docker.com/introduction/understanding-docker/， 本文由&amp;#100;&amp;#101;&amp;#x65;&amp;#114;&amp;#108;&amp;#117;&amp;#120;&amp;#64;&amp;#x31;&amp;#54;&amp;#51;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#x6d;翻译。 什么是Docker？Docker是一个用于开发、装载和运行程度的开放平台，可使你的程">
+<meta property="og:description" content="原文出自https://docs.docker.com/introduction/understanding-docker/， 本文由&amp;#100;&amp;#101;&amp;#101;&amp;#114;&amp;#108;&amp;#117;&amp;#120;&amp;#x40;&amp;#49;&amp;#x36;&amp;#x33;&amp;#46;&amp;#99;&amp;#x6f;&amp;#109;翻译。 什么是Docker？Docker是一个用于开发、装载和运行程度的开放平台，可使你的程">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://docs.docker.com/article-img/architecture.svg">
 <meta property="og:updated_time" content="2018-11-20T15:13:18.233Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解Docker">
-<meta name="twitter:description" content="原文出自https://docs.docker.com/introduction/understanding-docker/， 本文由&amp;#100;&amp;#101;&amp;#x65;&amp;#114;&amp;#108;&amp;#117;&amp;#120;&amp;#64;&amp;#x31;&amp;#54;&amp;#51;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#x6d;翻译。 什么是Docker？Docker是一个用于开发、装载和运行程度的开放平台，可使你的程">
+<meta name="twitter:description" content="原文出自https://docs.docker.com/introduction/understanding-docker/， 本文由&amp;#100;&amp;#101;&amp;#101;&amp;#114;&amp;#108;&amp;#117;&amp;#120;&amp;#x40;&amp;#49;&amp;#x36;&amp;#x33;&amp;#46;&amp;#99;&amp;#x6f;&amp;#109;翻译。 什么是Docker？Docker是一个用于开发、装载和运行程度的开放平台，可使你的程">
 <meta name="twitter:image" content="https://docs.docker.com/article-img/architecture.svg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -46,9 +46,9 @@
       <nav id="main-nav">
         <a id="main-nav-toggle" class="nav-icon"></a>
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a class="main-nav-link" href="/">主页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a class="main-nav-link" href="/archives">归档</a>
         
       </nav>
       <nav id="sub-nav">
@@ -86,7 +86,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>原文出自<a href="https://docs.docker.com/introduction/understanding-docker/，" target="_blank" rel="noopener">https://docs.docker.com/introduction/understanding-docker/，</a> 本文由<a href="mailto:&#100;&#101;&#x65;&#114;&#108;&#117;&#120;&#64;&#x31;&#54;&#51;&#x2e;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#100;&#101;&#x65;&#114;&#108;&#117;&#120;&#64;&#x31;&#54;&#51;&#x2e;&#x63;&#111;&#x6d;</a>翻译。</p>
+        <p>原文出自<a href="https://docs.docker.com/introduction/understanding-docker/，" target="_blank" rel="noopener">https://docs.docker.com/introduction/understanding-docker/，</a> 本文由<a href="mailto:&#100;&#101;&#101;&#114;&#108;&#117;&#120;&#x40;&#49;&#x36;&#x33;&#46;&#99;&#x6f;&#109;" target="_blank" rel="noopener">&#100;&#101;&#101;&#114;&#108;&#117;&#120;&#x40;&#49;&#x36;&#x33;&#46;&#99;&#x6f;&#109;</a>翻译。</p>
 <h1 id="什么是Docker？"><a href="#什么是Docker？" class="headerlink" title="什么是Docker？"></a>什么是Docker？</h1><p>Docker是一个用于开发、装载和运行程度的开放平台，可使你的程序迁移更加便捷。在Docker中可以将你的应用程序和基础设施层隔离，并且还可以将你的基础设施当作程序一样进行管理。Docker可以帮助你更加快速地打包你代码、更加快速地测试、更加快速地部署，并且可以减少写代码到部署运行代码的周期。</p>
 <p>Docker通过将一个轻量级的容器虚拟化平台和一组标准工作流程、工具进行集成，来帮助你方便地管理和部署应用。</p>
 <p>核心的是，Docker提供了一种在一个安全隔离的环境中运行几乎所有程序方式，这种隔离性和安全性允许你在同一主机上同时运行多个容器，而容器的这种轻量级特性，意味着你可以节省更多的硬件资源，因为你不必消耗运行hypervisor所需要的额外负载的。</p>
@@ -184,7 +184,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://deerlux.github.io/blog/2014/10/31/understanding-docker/" data-id="cjou9po0i000sowimdct8lsza" class="article-share-link">Share</a>
+      <a data-url="http://deerlux.github.io/blog/2014/10/31/understanding-docker/" data-id="ck3ldyt8z000b9eim7yt8dgu3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/虚拟化/">虚拟化</a></li></ul>
@@ -243,7 +243,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">7</span></li></ul>
     </div>
   </div>
 
@@ -255,14 +255,6 @@
       <ul>
         
           <li>
-            <a href="/2018/11/21/helloWorld/">helloWorld</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/20/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
             <a href="/2015/04/21/gitolite/">利用gitolite实现自动部署的简易实现方式</a>
           </li>
         
@@ -272,6 +264,14 @@
         
           <li>
             <a href="/2015/03/08/docker-systemd-socket-activation/">利用systemd按需激Docker容器</a>
+          </li>
+        
+          <li>
+            <a href="/2014/11/15/haomama/">好妈妈胜过好老师——现代儿童教育启示录</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/31/understanding-docker/">理解Docker</a>
           </li>
         
       </ul>
@@ -286,7 +286,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018 John Doe<br>
+      &copy; 2019 John Doe<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
@@ -294,9 +294,9 @@
     </div>
     <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
+    <a href="/" class="mobile-nav-link">主页</a>
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+    <a href="/archives" class="mobile-nav-link">归档</a>
   
 </nav>
     

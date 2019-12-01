@@ -46,9 +46,9 @@
       <nav id="main-nav">
         <a id="main-nav-toggle" class="nav-icon"></a>
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a class="main-nav-link" href="/">主页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a class="main-nav-link" href="/archives">归档</a>
         
       </nav>
       <nav id="sub-nav">
@@ -119,7 +119,7 @@
 <p>这里我们还利用<em>ExecStartPost</em>行耍了一个小聪明，这是systemd在主进程启动后立马要运行的进程，此例中我们在继续往下走之前让其sleep了1秒钟。这是必要的，因为尽管docker启动容器非常快，但是容器中的进程的启动可能需要稍微长一点的时间完成初始化，systemd也非常快，所以有可能代理在nginx准备好接收之前就开始转发了，所以我们添加了一点延迟，给Dcoker/nginx一个空闲启动，这有点耍赖但是很有效（但是看<a href="#容器服务改进">下面</a>）</p>
 <h1 id="一切就绪"><a href="#一切就绪" class="headerlink" title="一切就绪"></a>一切就绪</h1><p>现在你可以：当systemd启动的时候开启一个socket，当第一个连接到达时，级联的依赖关系会使nginx Docker通过代理对此连接进行响应。Easy。</p>
 <h1 id="容器服务改进"><a href="#容器服务改进" class="headerlink" title="容器服务改进"></a>容器服务改进</h1><p>任何想要优化系统启动时间的人都恨死了在代码或配置文件中随意添加诸如<em>sleep</em>的语句，他们要么是因系统很快而不需要此延迟，要么是得到了很多难以定位的随机错误。上述<em>ExecStartPost</em>中的<em>sleep</em>语句也同样使我神经过敏，所以我也想把它删了。其实我们真正想做的是确认端口的监听已经启动了，但是通过了一种sleep的方式。我们可以通过一种循环检测端口是否已经正常启动的方式来实现，我用<a href="http://en.wikipedia.org/wiki/Netcat" target="_blank" rel="noopener">netcat</a>写了一个wrapper的脚本。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">host=$1</span><br><span class="line">port=$2</span><br><span class="line">tries=600</span><br><span class="line"></span><br><span class="line">for i in `seq $tries`; do</span><br><span class="line">    if /bin/nc -z $host $port &gt; /dev/null ; then</span><br><span class="line">        # Ready</span><br><span class="line">        exit 0</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    /bin/sleep 0.1</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> FAIL</span></span><br><span class="line">exit -1</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">host=$1</span><br><span class="line">port=$2</span><br><span class="line">tries=600</span><br><span class="line"></span><br><span class="line">for i in `seq $tries`; do</span><br><span class="line">    if /bin/nc -z $host $port &gt; /dev/null ; then</span><br><span class="line">        # Ready</span><br><span class="line">        exit 0</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    /bin/sleep 0.1</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> FAIL</span><br><span class="line">exit -1</span><br></pre></td></tr></table></figure>
 <p>这个脚本需要一个host和port的参数，检查一下是否有响应，每秒钟检查10次，如果1分钟之内还没有响应就返回失败。我们将此脚本安装到<em>/usr/local/bin/waitport</em>（设置其为可运行），现在我们的<em>nginx-docker.service</em>文件改为这样：</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=nginx container</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">ExecStart</span>=/usr/bin/docker start -a nginx8080</span><br><span class="line"><span class="attr">ExecStartPost</span>=/usr/local/bin/waitport <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">ExecStop</span>=/usr/bin/docker stop nginx8080</span><br></pre></td></tr></table></figure>
 <p>也就是说，waitport脚本可以根据你的系统应用灵活调整，如果你的容器启动速度很快的话通常都会立即返回。</p>
@@ -127,7 +127,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://deerlux.github.io/blog/2015/03/08/docker-systemd-socket-activation/" data-id="cjou9po0g000rowim93h7yv1o" class="article-share-link">Share</a>
+      <a data-url="http://deerlux.github.io/blog/2015/03/08/docker-systemd-socket-activation/" data-id="ck3ldyt8p00019eim82wccxu4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -184,7 +184,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">7</span></li></ul>
     </div>
   </div>
 
@@ -196,14 +196,6 @@
       <ul>
         
           <li>
-            <a href="/2018/11/21/helloWorld/">helloWorld</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/20/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
             <a href="/2015/04/21/gitolite/">利用gitolite实现自动部署的简易实现方式</a>
           </li>
         
@@ -213,6 +205,14 @@
         
           <li>
             <a href="/2015/03/08/docker-systemd-socket-activation/">利用systemd按需激Docker容器</a>
+          </li>
+        
+          <li>
+            <a href="/2014/11/15/haomama/">好妈妈胜过好老师——现代儿童教育启示录</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/31/understanding-docker/">理解Docker</a>
           </li>
         
       </ul>
@@ -227,7 +227,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018 John Doe<br>
+      &copy; 2019 John Doe<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
@@ -235,9 +235,9 @@
     </div>
     <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
+    <a href="/" class="mobile-nav-link">主页</a>
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+    <a href="/archives" class="mobile-nav-link">归档</a>
   
 </nav>
     
